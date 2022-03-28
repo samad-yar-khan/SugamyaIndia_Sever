@@ -9,6 +9,14 @@ const disabeledSchema = new mongoose.Schema({
     disability : {
         type:mongoose.Schema.Types.ObjectId,
         ref : 'Disability'
+    },
+    pending :{
+        type : Boolean,
+        default : true
+    },
+    approved : {
+        type : Boolean,
+        default:false
     }
 
 } , {

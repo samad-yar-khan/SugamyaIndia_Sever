@@ -4,6 +4,7 @@ const Disabeled = require('../../../models/disabeled');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const environment = require('../../../config/environment');
+const Disability = require('../../../models/disabilities');
 
 module.exports.allUsers = async function(req,res){
 
@@ -280,8 +281,10 @@ module.exports.profile = async function (req, res) {
                 'user':0
             })
             .populate({
-                path : 'disability'
-            });           
+                path : "disability"
+            }
+            );           
+     
     
 		return res.status(200).json({
 			message: "User profile fetched successfully!",

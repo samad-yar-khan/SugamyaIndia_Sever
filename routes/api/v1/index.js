@@ -5,8 +5,8 @@ const router = express.Router();
 
 
 router.use('/users' , require('./users'));
-// router.use('/tweets' , require('./tweets') );
-router.use('/github' , require('./github'));
+router.use('/disability' , require('./disability'));
+router.use('/disabeled' , require('./disabeled'));
 
 
 

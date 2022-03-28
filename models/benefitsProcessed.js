@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const processedBenefits = new mongoose.Schema({
-
     user : {
         type:mongoose.Schema.Types.ObjectId,
         ref : 'User'
@@ -14,8 +13,11 @@ const processedBenefits = new mongoose.Schema({
         type:Boolean,
         require:true,
         default:false
-    }
-
+    },
+    pending :{
+        type : Boolean,
+        default : true
+    },
 } , {
     timestamps:true
 })
