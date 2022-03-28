@@ -10,6 +10,10 @@ const benefitSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    details :{
+        type:String,
+        default:""
+    }
 
 },{
     timestamps:true

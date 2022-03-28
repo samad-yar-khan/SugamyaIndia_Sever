@@ -5,9 +5,10 @@ const Disabeled = require("../../../models/disabeled")
 module.exports.create = async function (req, res) {
 
 	try {    
-        let disabilityID = req.query.id;
+        let disabilityCode = req.params.disability;
         let user = req.user.id;
-        const disability = await Disability.findById(disabilityID);
+
+        const disability = await Disability.find({disability_code:disabilityCode});
         if(!disability){
             return res.status(401).json({
 				message: "Invalid Disability",
@@ -15,7 +16,6 @@ module.exports.create = async function (req, res) {
 			});
         }
 
-      
         const disabeledCount = await Disabeled.count({disability:disability.id , user:user});
         if(disabeledCount){
             return res.status(401).json({
@@ -113,35 +113,6 @@ module.exports.disapprove = async function (req, res) {
                     message: "Approved Diability",
                     updatedDisabled : updatedDisabled
                 });
-
-        }else{
-            return res.status(500).json({
-                success : false,
-                message: "Unauthorized",
-            });
-        }
-	} catch (err) {
-		// console.log("Error in deleting post******:", err);
-		return res.status(500).json({
-            success : false,
-			message: "Internal server error",
-		});
-	}
-};
-
-module.exports.all = async function (req, res) {
-	try {
-
-        if(req.user.official){
-
-            let disableData = await Disabeled.find({}).populate({
-                path : "disability"
-            });
-
-            return res.status(200).json({
-                success : true,
-                disableData : disableData
-            });
 
         }else{
             return res.status(500).json({

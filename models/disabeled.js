@@ -4,11 +4,13 @@ const disabeledSchema = new mongoose.Schema({
 
     user : {
         type:mongoose.Schema.Types.ObjectId,
-        ref : 'User'
+        ref : 'User',
+        required:true
     },
     disability : {
         type:mongoose.Schema.Types.ObjectId,
-        ref : 'Disability'
+        ref : 'Disability',
+        required:true
     },
     pending :{
         type : Boolean,

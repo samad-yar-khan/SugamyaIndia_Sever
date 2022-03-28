@@ -7,6 +7,7 @@ const passport = require("passport");
 router.post("/create", passport.authenticate("jwt", { session: false }), disabeledApi.create);
 router.post("/approve", passport.authenticate("jwt", { session: false }), disabeledApi.approve);
 router.post("/disapprove", passport.authenticate("jwt", { session: false }), disabeledApi.disapprove);
+router.get("/all", passport.authenticate("jwt", { session: false }), disabeledApi.all);
 //passport will put an authentication check on out delete request and
 
 module.exports = router;
