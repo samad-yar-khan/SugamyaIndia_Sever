@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
         type : String,
         required : false
     },
-    identifier:{
+    identifier:{ 
         type : String,
         required : false
     },

@@ -14,7 +14,7 @@ const processedBenefits = new mongoose.Schema({
         require:true,
         default:false
     },
-    pending :{
+    pending :{ 
         type : Boolean,
         default : true
     },

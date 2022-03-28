@@ -2,11 +2,11 @@ const User = require('../../../models/user');
 const ProcessedBenefit = require('../../../models/benefitsProcessed');
 const Disabeled = require('../../../models/disabeled');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 const environment = require('../../../config/environment');
-const Disability = require('../../../models/disabilities');
+
 
 module.exports.allUsers = async function(req,res){
+
 
     try{
 
@@ -115,7 +115,7 @@ module.exports.create = async function (req, res) {
 	// console.log("req.body from users_api", req.body);
     // console.log(req.body);
 
-    console.log(req.body);
+  
     if(req.body.password != req.body.confirmPassword){
         return res.status(200).json({
             message: "Passwords do not match !",
@@ -154,7 +154,7 @@ module.exports.create = async function (req, res) {
             if(!user_same_user_name){
 
                 if(req.body.beneficiary-0){
-                    console.log(22);
+               
                     req.body['user_name'] = req.body.udid;
                     req.body['identifier'] = req.body.udid;
                 }else{
@@ -208,7 +208,7 @@ module.exports.createSession = async function(req , res){
     // console.log(req.body);
 
     try {
-        console.log(req.body);
+
         let user = await User.findOne({identifier:req.body.identifier});
 
         if(!user || !user.isValidPassword(req.body.password)){
