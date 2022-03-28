@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.use('/users' , require('./users'));
-router.use('/tweets' , require('./tweets') );
+// router.use('/tweets' , require('./tweets') );
 router.use('/github' , require('./github'));
 
 

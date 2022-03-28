@@ -1,6 +1,6 @@
 const User = require('../../../models/user');
-const Tweets = require('../../../models/tweets');
-const Follow = require('../../../models/follow');
+const ProcessedBenefit = require('../../../models/benefitsProcessed');
+const Disabeled = require('../../../models/disabeled');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const environment = require('../../../config/environment');
@@ -293,73 +293,73 @@ module.exports.profile = async function (req, res) {
 
 
 
-module.exports.follow = async function (req, res) {
-	if (req.user.id === req.params.id) {
-		return res.status(403).json({
-            success:false,
-			message: "You can't follow yourself!",
-		});
-	} else {
-		try {
+// module.exports.follow = async function (req, res) {
+// 	if (req.user.id === req.params.id) {
+// 		return res.status(403).json({
+//             success:false,
+// 			message: "You can't follow yourself!",
+// 		});
+// 	} else {
+// 		try {
 
-            let relationShip = await Follow.findOne({from_user : req.user.id , to_user :  req.params.id});
+//             let relationShip = await Follow.findOne({from_user : req.user.id , to_user :  req.params.id});
 
-			// if user does not already follows toFollowUSer
-			if (!relationShip) {
+// 			// if user does not already follows toFollowUSer
+// 			if (!relationShip) {
 				
-                let newFollowRelationShip = await Follow.create({from_user : req.user.id , to_user :  req.params.id});
+//                 let newFollowRelationShip = await Follow.create({from_user : req.user.id , to_user :  req.params.id});
 
-				return res.status(200).json({
-					message: "You started following this user!",
-					success: true,
-                    newFollowRelationShip
-				});
-			} else {
-				return res.status(403).json({
-                    success:false,
-					message: "You already follow this user",
-				});
-			}
-		} catch (error) {
-			console.log("Error", error);
-			return res.status(500).json({
-                success:false,
-				message: error,
-			});
-		}
-	}
-};
+// 				return res.status(200).json({
+// 					message: "You started following this user!",
+// 					success: true,
+//                     newFollowRelationShip
+// 				});
+// 			} else {
+// 				return res.status(403).json({
+//                     success:false,
+// 					message: "You already follow this user",
+// 				});
+// 			}
+// 		} catch (error) {
+// 			console.log("Error", error);
+// 			return res.status(500).json({
+//                 success:false,
+// 				message: error,
+// 			});
+// 		}
+// 	}
+// };
 
-module.exports.unfollow = async function (req, res) {
-	if (req.user.id === req.params.id) {
-		return res.status(403).json({
-            success:false,
-			message: "You can't unfollow yourself!",
-		});
-	} else {
-		try {
+// module.exports.unfollow = async function (req, res) {
+// 	if (req.user.id === req.params.id) {
+// 		return res.status(403).json({
+//             success:false,
+// 			message: "You can't unfollow yourself!",
+// 		});
+// 	} else {
+// 		try {
 		
-            let relationShip = await Follow.findOne({from_user : req.user.id , to_user :  req.params.id});
-			if (relationShip) {
+//             let relationShip = await Follow.findOne({from_user : req.user.id , to_user :  req.params.id});
+// 			if (relationShip) {
 				
-                relationShip.remove();
-                relationShip.update();
+//                 relationShip.remove();
+//                 relationShip.update();
 
-				return res.status(200).json({
-					message: "You have unfollowed this user!",
-					success: true,
-				});
-			} else {
-				return res.status(403).json({
-                    success:false,
-					message: "You do not follow this user",
-				});
-			}
-		} catch (error) {
-			return res.status(500).json({
-				message: error,
-			});
-		}
-	}
-};
+// 				return res.status(200).json({
+// 					message: "You have unfollowed this user!",
+// 					success: true,
+// 				});
+// 			} else {
+// 				return res.status(403).json({
+//                     success:false,
+// 					message: "You do not follow this user",
+// 				});
+// 			}
+// 		} catch (error) {
+// 			return res.status(500).json({
+// 				message: error,
+// 			});
+// 		}
+// 	}
+// };
 

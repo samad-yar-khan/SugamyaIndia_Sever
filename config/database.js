@@ -5,7 +5,7 @@ const env = require("./environment");
 // console.log(env.db_pass);
 
 
-const uri = `mongodb+srv://samad:${env.db_pass}@cluster0.ypaul.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://samad:${env.db_pass}@cluster0.prvdl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const connectionParams={
   useNewUrlParser: true,
   useUnifiedTopology: true 
