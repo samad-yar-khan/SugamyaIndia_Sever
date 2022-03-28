@@ -1,4 +1,3 @@
-const User = require("../../../models/user");
 const Disability = require("../../../models/disabilities");
 const Disabeled = require("../../../models/disabeled")
 

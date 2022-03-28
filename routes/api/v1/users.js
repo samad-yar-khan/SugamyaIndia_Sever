@@ -9,7 +9,7 @@ router.get('/all' ,passport.authenticate("jwt", { session: false }), usersApi.al
 router.post('/find',passport.authenticate("jwt", { session: false }), usersApi.findUsers );
 router.post('/signup',usersApi.create);
 router.post("/login", usersApi.createSession);
-router.get("/profile/:id", passport.authenticate("jwt", { session: false }), usersApi.profile);
+router.get("/profile", passport.authenticate("jwt", { session: false }), usersApi.profile);
 // router.post("/follow/:id", passport.authenticate("jwt", { session: false }), usersApi.follow);
 // router.post("/unfollow/:id", passport.authenticate("jwt", { session: false }), usersApi.unfollow);
 module.exports = router;

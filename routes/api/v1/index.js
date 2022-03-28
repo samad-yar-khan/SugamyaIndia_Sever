@@ -8,6 +8,7 @@ router.use('/users' , require('./users'));
 router.use('/disability' , require('./disability'));
 router.use('/disabeled' , require('./disabeled'));
 router.use('/benefit' , require('./benefit'));
+router.use('/processedbenefit' , require('./processedbenefit'));
 
 
 

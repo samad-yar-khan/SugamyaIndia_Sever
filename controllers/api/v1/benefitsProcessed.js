@@ -1,23 +1,22 @@
-const User = require("../../../models/user");
-const Disability = require("../../../models/disabilities");
-const Disabeled = require("../../../models/disabeled")
+const Benefit = require("../../../models/benefits");
+const ProcessedBenefit = require("../../../models/benefitsProcessed")
 
 module.exports.create = async function (req, res) {
 
 	try {    
-        let disabilityCode = req.params.disability;
+        let BenefitID = req.query.id;
         let user = req.user.id;
-
-        const disability = await Disability.find({disability_code:disabilityCode});
-        if(!disability){
+        const benefit = await Benefit.findById(BenefitID);
+        if(!benefit){
             return res.status(401).json({
-				message: "Invalid Disability",
+				message: "Invalid Benefit",
                 success : false
 			});
         }
 
-        const disabeledCount = await Disabeled.count({disability:disability.id , user:user});
-        if(disabeledCount){
+      
+        const benefitCount = await ProcessedBenefit.count({benefit:benefit.id , user:user});
+        if(benefitCount){
             return res.status(401).json({
 				message: "Duplicate Request",
                 success : false
@@ -31,19 +30,19 @@ module.exports.create = async function (req, res) {
 			});
         }
 
-        const newDisabeled = await Disabeled.create({
+        const newBenefit = await ProcessedBenefit.create({
             user : user,
-            disability:disability.id,
+            benefit:benefit.id,
             approved:false,
             pending: true
         });
 
-		if (newDisabeled!==null) {
+		if (newBenefit!==null) {
 
 			return res.status(200).json({
-				message: "Disabile Person Added",
+				message: "Benefit Queued",
 				success: true,
-                newDisabeled : newDisabeled
+                newBenefit : newBenefit
 			});
 		} else {
 			return res.status(401).json({
@@ -65,7 +64,7 @@ module.exports.approve = async function (req, res) {
 
         if(req.user.official){
 
-            let updatedDisabled = await Disabeled.updateOne(
+            let updatedBenefitPro = await ProcessedBenefit.updateOne(
                 {
                     id : req.params.id
                 },{
@@ -75,8 +74,8 @@ module.exports.approve = async function (req, res) {
 
                 return res.status(200).json({
                     success : true,
-                    message: "Approved Diability",
-                    updatedDisabled : updatedDisabled
+                    message: "Approved Benefit",
+                    updatedBenefitPro : updatedBenefitPro
                 });
 
         }else{
@@ -100,7 +99,7 @@ module.exports.disapprove = async function (req, res) {
 
         if(req.user.official){
 
-            let updatedDisabled = await Disabeled.updateOne(
+            let updatedBenefitPro = await ProcessedBenefit.updateOne(
                 {
                     id : req.params.id
                 },{
@@ -110,9 +109,38 @@ module.exports.disapprove = async function (req, res) {
 
                 return res.status(200).json({
                     success : true,
-                    message: "Approved Diability",
-                    updatedDisabled : updatedDisabled
+                    message: "Disapproved Benefit",
+                    updatedBenefitPro : updatedBenefitPro
                 });
+
+        }else{
+            return res.status(500).json({
+                success : false,
+                message: "Unauthorized",
+            });
+        }
+	} catch (err) {
+		// console.log("Error in deleting post******:", err);
+		return res.status(500).json({
+            success : false,
+			message: "Internal server error",
+		});
+	}
+};
+
+module.exports.all = async function (req, res) {
+	try {
+
+        if(req.user.official){
+
+            let disableData = await ProcessedBenefit.find({}).populate({
+                path : "Benefit"
+            });
+
+            return res.status(200).json({
+                success : true,
+                disableData : disableData
+            });
 
         }else{
             return res.status(500).json({

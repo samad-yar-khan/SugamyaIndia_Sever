@@ -250,7 +250,7 @@ module.exports.profile = async function (req, res) {
 	try {
 
 
-		let user = await User.findById(req.params.id , {
+		let user = await User.findById(req.query.id , {
             'password' :0,
             '__v':0 ,
             'createdAt':0,
@@ -259,7 +259,7 @@ module.exports.profile = async function (req, res) {
        
         let user_benefits = await ProcessedBenefit.find(
             { 
-                user:req.params.id
+                user:req.query.id
             },
             {
                 '__v':0 ,
@@ -272,7 +272,7 @@ module.exports.profile = async function (req, res) {
             });
         let user_disabilities = await Disabeled.find(
             { 
-                user:req.params.id
+                user:req.query.id
             },
             {
                 '__v':0 ,
