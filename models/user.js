@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const userSchema = mongoose.Schema({
     email:{
         type: String,
-        required : true,
+        required : false,
         unique :true
     },
     password:{
@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     },
     user_name:{
         type: String,
-        required : false,
+        required : true,
         unique :true
     },
     name_ :{
@@ -21,6 +21,10 @@ const userSchema = mongoose.Schema({
         required : true
     },
     udid:{
+        type : String,
+        required : false
+    },
+    identifier:{
         type : String,
         required : false
     },
@@ -48,6 +52,10 @@ const userSchema = mongoose.Schema({
         type: Number,
         required :false
     },
+    beneficiary :{
+        type: Boolean ,
+        default : false,
+    },
     official:{
         type: Boolean ,
         default : false,
@@ -69,6 +77,10 @@ const userSchema = mongoose.Schema({
         required : true
     },
     ngo_name:{
+        type: String,
+        required: false
+    },
+    phone_number:{
         type: String,
         required: false
     }

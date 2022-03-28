@@ -5,6 +5,15 @@ const port = env.port;
 const path = require('path');
 const db = require('./config/database');
 const cookieParser = require("cookie-parser");
+var bodyParser = require('body-parser')
+
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 //middleware 
 // app.use(express.urlencoded());
 app.use(cookieParser());

@@ -114,6 +114,7 @@ module.exports.create = async function (req, res) {
 	// console.log("req.body from users_api", req.body);
     // console.log(req.body);
 
+    console.log(req.body);
     if(req.body.password != req.body.confirmPassword){
         return res.status(200).json({
             message: "Passwords do not match !",
@@ -121,16 +122,50 @@ module.exports.create = async function (req, res) {
         });
     }
 
+    if(req.body.email===null && req.body.udid==null){
+        return res.status(200).json({
+            message: "Enter UDID/EMAIL = !",
+            success :false
+        }); 
+    }
+
     try{
-        let user = await User.findOne({email:req.body.email});
+        
+        let user = null;
+        if(req.body.beneficiary){
+            user = await User.findOne({udid:req.body.udid});
+        }else{
+            user = await User.findOne({email:req.body.email});
+        }
+        
 
         if(!user){
 
-            let user_same_user_name = await User.findOne({user_name : req.body.user_name});
+            let identifier = null;       
+            if(req.body.beneficiary){
+              
+                identifier = req.body.udid;
+            }else{
+               
+                identifier = req.body.email;
+            }     
+            let user_same_user_name = await User.findOne({identifier : identifier});
             if(!user_same_user_name){
 
+                if(req.body.beneficiary-0){
+                    console.log(22);
+                    req.body['user_name'] = req.body.udid;
+                    req.body['identifier'] = req.body.udid;
+                }else{
+                    if(!req.body.user_name){
+                        req.body.user_name = req.body.email;
+                    }
+                    req.body['identifier'] = req.body.email;
+                }
+                
                 let new_user = await User.create(req.body);
-
+                new_user['password'] = "";
+                
                 return res.status(200).json({
 					success: true,
 					message: "You have signed up, sign in to continue!",
@@ -140,12 +175,9 @@ module.exports.create = async function (req, res) {
 					},
 				});
 
-
-
-
             }else{
                 return res.status(200).json({
-                    message: "Please try a different user name !",
+                    message: "Please try a different user name / udid for signup !",
                     success :false
                 });
             }
@@ -175,14 +207,14 @@ module.exports.createSession = async function(req , res){
     // console.log(req.body);
 
     try {
-        let user = await User.findOne({email:req.body.email});
-
+        console.log(req.body);
+        let user = await User.findOne({identifier:req.body.identifier});
 
         if(!user || !user.isValidPassword(req.body.password)){
         
             return res.json(422, {
                 success:false ,
-                message:"Invalid Username Or Password"           
+                message:"Invalid Username/UDID Or Password"           
             });
 
         }
@@ -199,6 +231,7 @@ module.exports.createSession = async function(req , res){
 
 
     } catch (error) {
+        console.log(error);
         return res.json(500 , {
             success:false,
             message:"Internal Server Error!"
@@ -215,71 +248,47 @@ module.exports.profile = async function (req, res) {
     // console.log(req.params.id);
 	try {
 
+
 		let user = await User.findById(req.params.id , {
             'password' :0,
             '__v':0 ,
             'createdAt':0,
             'updatedAt':0
         });
-		let user_tweets = await Tweets.find({ user: req.params.id });
-        
-        let following = await Follow.find(
-            {
-                from_user : req.params.id 
+       
+        let user_benefits = await ProcessedBenefit.find(
+            { 
+                user:req.params.id
             },
             {
-                '_id':0,
-                'from_user':0,
                 '__v':0 ,
                 'createdAt':0,
-                'updatedAt':0
+                'updatedAt':0,
+                'user':0
             })
             .populate({
-                path :'to_user',
-                select :{
-                    'name_' : 1 ,
-                    'email' : 1,
-                    'id':1 , 
-                    'user_name' :1
-                }
+                path : 'benefit'
             });
-        // let followingList =  following.map(async (f) =>  {
-        // // let fellowUser = await User.findById(f.to_user);
-      
-        // // return fellowUser;
-        // // }
-        // // );
-
-        let followers = await Follow.find(
-            {
-                to_user : req.params.id
+        let user_disabilities = await Disabeled.find(
+            { 
+                user:req.params.id
             },
             {
-                '_id':0,
-                'to_user':0,
                 '__v':0 ,
-                'createdAt':0 ,
-                'updatedAt':0
+                'createdAt':0,
+                'updatedAt':0,
+                'user':0
             })
             .populate({
-                path :'from_user',
-                select :{
-                    'name_' : 1 , 
-                    'email' : 1,
-                    'id':1 , 
-                    'user_name' :1
-                }
-            });
-
-        
-           
+                path : 'disability'
+            });           
+    
 		return res.status(200).json({
 			message: "User profile fetched successfully!",
 			data: {
 				profile_user: user,
-				user_tweets: user_tweets,
-                followers,
-                following
+                user_disabilities,
+                user_benefits
 			},
 			success: true,
 		});

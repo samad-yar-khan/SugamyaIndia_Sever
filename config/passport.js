@@ -10,12 +10,12 @@ const environment = require('./environment');
     'login',
     new localStrategy(
       {
-        usernameField: 'email',
+        usernameField: 'identifier',
         passwordField: 'password'
       },
-      async (email, password, done) => {
+      async (identifier, password, done) => {
         try {
-          const user = await UserModel.findOne({ email });
+          const user = await UserModel.findOne({ identifier });
   
           if (!user) {
             return done(null, false, { message: 'User not found' });

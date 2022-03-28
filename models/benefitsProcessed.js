@@ -6,7 +6,7 @@ const processedBenefits = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref : 'User'
     },
-    disability : {
+    benefit : {
         type:mongoose.Schema.Types.ObjectId,
         ref : 'Benefit'
     },
