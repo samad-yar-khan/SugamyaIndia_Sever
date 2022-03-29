@@ -1,10 +1,10 @@
 <h1 align="center">
-    Micro-Blogging Platform
+    Sugamya India
 </h1>
 
 <blockquote align="center">
   <b><i>
-        This is the backend server for a micro-blogging platform like Twitter made with Node.js , Express.js and MongoDB.
+        This is our solution to the problem statement , guven by the  . We have developed a 3 way application which can be used by people to avail the benefits of the  ADIP scheme using thier UDID cards. We also provide a portal for the government officials to visualise and update the data with ease so as to maximise the number of benficiaries and help as many people suffering from various disabilities. The portal also provides a fool proof way for the distribution of resources amongst benficiaries to  minimise the curroption and made it easier for NGOs to onboard volunteers for the distribution of resources.
   </i></b>
 </blockquote>
 
@@ -26,30 +26,81 @@
 1. Open this cloned folder in the text editor of your choice.
 2. If you want to use the project using `npm` then that comes alongside when you download and install node js.
 
-### 🚩 Running the project  :
+### 🚩 Running the Project Server  :
 
-1. Open the terminal and type in `npm install`, to install all the dependencies.
+1. Open the terminal and type `cd backend/alimco_server-master` to enter the repo and install dependencies using `npm install`.
 2. Run: `npm start`
 3. Use [http://localhost:8000](http://localhost:8000) as the root for all API's.
-
 
 ## 💻 API DOCUMENTATION 
 
 #### Endpoints
-- API_ROOT - https://micro-blogging-platform-server.herokuapp.com 
+- Hosted API_ROOT - https://sihmasti.herokuapp.com/
 - Authorization required - Requests require the JWT token. Set Authorization : Bearer <token> in header.
 - Query params - Just add the params in the url 
 - Form body - Send as body in fetch request 
 
 ### 1)USER  
+    
+#### 1. SignUp 
 
-#### 1. Login 
+- POST
+- End point - API_ROOT/api/v1/users/signup 
+- Authorization Required - No
+- Same Api endpoint can be used for signing up of different users - `Volunteers` , `Officials` and `Beneficiaries` , but with separate form feilds.
+ 
+###### For Benficiaries 
+- Form body 
+  - udid - String
+  - password - String
+  - confirmPassword - String
+  - email - String (Optional)
+  - name_ - String
+  - user_name - String (Optional)
+  - state - String
+  - city - String
+  - district - String
+  - pincode - String
+  - phone_number - Number
+  - beneficiary - 1 (Boolean)
+
+ ###### For Volunteer
+- Form body 
+  - email - String (Optional)
+  - password - String
+  - confirmPassword - String
+  - user_name - String 
+  - name_ - String
+  - state - String
+  - city - String
+  - district - String
+  - pincode - String
+  - phone_number - Number
+  - volunteer - 1 (Boolean)
+    
+    
+###### For Officials 
+- Form body 
+  - email - String (Optional)
+  - password - String
+  - confirmPassword - String
+  - user_name - String 
+  - name_ - String
+  - state - String
+  - city - String
+  - district - String
+  - pincode - String
+  - phone_number - Number
+  - official - 1 (Boolean)
+ 
+
+#### 2. Login 
 
 - POST
 - End point - API_ROOT/api/v1/users/login 
 - Authorization Required - No
 - Form body
-  - email - String
+  - identifier - String (UDID for Beneficiaries and email for volunteers and official)
   - password - String
 
 - Returns a JWT to be used for further authentication
@@ -58,32 +109,18 @@
 
 ```
 {
-"success": true,
-"message": "Sign in successfull , here is your token . Keep it safe !",
-
-"data": {
-        "token": "<token>"
-      }
+    "success": true,
+    "message": "Sign in sucessfull , here is your token . Keep it safe !",
+    "data": {
+        "token": "acces_token_jwt"
+    }
 }
 ```
-
-
-#### 2. SignUp 
-
-- POST
-- End point - API_ROOT/api/v1/users/signup 
-- Authorization Required - No
-- Form body 
-  - email - String
-  - password - String
-  - confirmPassword - String
-  - name_ - String
-  - user_name - String
 
 #### 3. Profile
 
 - GET
-- End point - API_ROOT/api/v1/users/profile/:id
+- End point - API_ROOT/api/v1/users/profile/?id=dmmyID
 - Authorization Required - Yes
 - Params - Add user.id as param to get the user profile data
 
@@ -96,71 +133,60 @@
     "message": "User profile fetched successfully!",
     "data": {
         "profile_user": {
-            "_id": "61dc26d6843e7ea2438aa267",
-            "email": "smdyarkhan00000@gmail.com",
-            "user_name": "sameer",
-            "name_": "sameer"
+            "_id": "6241f8f69e569b7b03551916",
+            "user_name": "123",
+            "name_": "Samad Yar Khan",
+            "udid": "123",
+            "identifier": "123",
+            "age": 21,
+            "district": "South West Delhi",
+            "city": "New Delhi",
+            "pincode": "110029",
+            "beneficiary": true,
+            "official": false,
+            "volunteer": false,
+            "ngo": false,
+            "verified": false,
+            "phone_number": "8447784803"
         },
-        "user_tweets": [
+        "user_disabilities": [
             {
-                "_id": "61dc272b843e7ea2438aa26b",
-                "content": "Hi I am sameer !",
-                "user": "61dc26d6843e7ea2438aa267",
-                "createdAt": "2022-01-10T12:31:39.302Z",
-                "updatedAt": "2022-01-10T12:31:39.302Z",
-                "__v": 0
+                "_id": "62423139263c994728899a9b",
+                "disability": {
+                    "_id": "62422149682094344953f720",
+                    "disability_name": "Hearing Impairment",
+                    "disability_code": "HEA123",
+                    "createdAt": "2022-03-28T20:57:45.812Z",
+                    "updatedAt": "2022-03-28T20:57:45.812Z",
+                    "__v": 0
+                },
+                "pending": true,
+                "approved": false
             }
         ],
-        "followers": [
+        "user_benefits": [
             {
-                "from_user": {
-                    "_id": "61db0c55119bd2efa6eda67e",
-                    "email": "smdyarkhan0000@gmail.com",
-                    "user_name": "sam2",
-                    "name_": "samad"
-                }
+                "_id": "624238bbb0b2c4bccbbfe1de",
+                "benefit": {
+                    "_id": "6242350a36c00659a3fc7997",
+                    "benefit_name": "Free Rice",
+                    "benefit_code": "RC1",
+                    "details": "Rice for everyone",
+                    "createdAt": "2022-03-28T22:22:02.389Z",
+                    "updatedAt": "2022-03-28T22:22:02.389Z",
+                    "__v": 0
+                },
+                "approved": false,
+                "pending": true
             }
-        ],
-        "following": []
+        ]
     },
     "success": true
 }
 ```
 
-#### 4. Following User
 
-- POST
-- End point - API_ROOT/api/v1/users/follow/:id
-- Authorization Required - Yes
-- Params - Add user.id as param to get the user profile data
-- Returns JSON 
-
-```
-{
-    "message": "You started following this user!",
-    "success": true,
-    "newFollowRelationShip": {
-        "from_user": "61dc26d6843e7ea2438aa267",
-        "to_user": "61db0c55119bd2efa6eda67e",
-        "_id": "61dc4f6acedf8581b0f7810d",
-        "createdAt": "2022-01-10T15:23:23.010Z",
-        "updatedAt": "2022-01-10T15:23:23.010Z",
-        "__v": 0
-    }
-}
-```
-
-#### 5. Unollowing User
-
-- POST
-- End point - API_ROOT/api/v1/users/unfollow/:id
-- Authorization Required - Yes
-- Params - Add user.id as param to get the user profile data
-- Returns JSON 
-
-
-
-#### 6. Fetching All Users
+#### 4. Fetching All Users
 
 - All
 - End point - API_ROOT/api/v1/users/all/
@@ -177,42 +203,52 @@
     "success": true,
     "users": [
         {
-            "_id": "61dabcff577930f23b4c7292",
-            "email": "smdyarkhan00@gmail.com",
-            "user_name": "sam",
-            "name_": "samad"
+            "_id": "6241f8f69e569b7b03551916",
+            "user_name": "123",
+            "name_": "Samad Yar Khan",
+            "udid": "123",
+            "identifier": "123",
+            "age": 21,
+            "district": "South West Delhi",
+            "city": "New Delhi",
+            "pincode": "110029",
+            "beneficiary": true,
+            "official": false,
+            "volunteer": false,
+            "ngo": false,
+            "verified": false,
+            "phone_number": "8447784803"
         },
         {
-            "_id": "61db0c55119bd2efa6eda67e",
-            "email": "smdyarkhan0000@gmail.com",
-            "user_name": "sam2",
-            "name_": "samad"
-        },
-        {
-            "_id": "61dc26d6843e7ea2438aa267",
-            "email": "smdyarkhan00000@gmail.com",
-            "user_name": "sameer",
-            "name_": "sameer"
-        },
-        {
-            "_id": "61ddd182e4b6cc3bfc729c3c",
+            "_id": "6241fc013cfa64280369bae4",
             "email": "smdyarkhan123@gmail.com",
-            "user_name": "samad",
-            "name_": "samad"
-        }
+            "user_name": "smdyarkhan123@gmail.com",
+            "name_": "Samarth Arora",
+            "identifier": "smdyarkhan123@gmail.com",
+            "age": 21,
+            "district": "South West Delhi",
+            "city": "New Delhi",
+            "pincode": "110029",
+            "beneficiary": false,
+            "official": false,
+            "volunteer": true,
+            "ngo": false,
+            "verified": false,
+            "ngo_name": "Enactus KGP",
+            "phone_number": "8447784803"
+        },
     ]
 }
 
-
 ```
 
-#### 7. Finding a Users
+#### 5. Finding a Users
 
-- POST
+- GET
 - End point - API_ROOT/api/v1/users/find/
 - Authorization Required - Yes
 - Form body
-  - search_text - String
+  - search_text - String (Can be a UDID or User Name or Email)
 - Returns JSON 
 
 
@@ -221,119 +257,99 @@
 {
     "message": "usersFetched !",
     "success": true,
-    "usersByName": [
-        {
-            "_id": "61dabcff577930f23b4c7292",
-            "email": "smdyarkhan00@gmail.com",
-            "user_name": "sam",
-            "name_": "samad"
-        },
-        {
-            "_id": "61db0c55119bd2efa6eda67e",
-            "email": "smdyarkhan0000@gmail.com",
-            "user_name": "sam2",
-            "name_": "samad"
-        }
-    ],
+    "usersByName": [],
     "usersByUserName": [
         {
-            "_id": "61ddd182e4b6cc3bfc729c3c",
+            "_id": "6241f8f69e569b7b03551916",
+            "user_name": "123",
+            "name_": "Samad Yar Khan",
+            "udid": "123",
+            "identifier": "123",
+            "age": 21,
+            "district": "South West Delhi",
+            "city": "New Delhi",
+            "pincode": "110029",
+            "beneficiary": true,
+            "official": false,
+            "volunteer": false,
+            "ngo": false,
+            "verified": false,
+            "phone_number": "8447784803"
+        },
+        {
+            "_id": "6241fc013cfa64280369bae4",
             "email": "smdyarkhan123@gmail.com",
-            "user_name": "samad",
-            "name_": "samad"
+            "user_name": "smdyarkhan123@gmail.com",
+            "name_": "Samarth Arora",
+            "identifier": "smdyarkhan123@gmail.com",
+            "age": 21,
+            "district": "South West Delhi",
+            "city": "New Delhi",
+            "pincode": "110029",
+            "beneficiary": false,
+            "official": false,
+            "volunteer": true,
+            "ngo": false,
+            "verified": false,
+            "ngo_name": "Enactus KGP",
+            "phone_number": "8447784803"
         }
     ]
 }
-
 ```
 
 
+### 2)Disability
 
+Disabilities can be of numerous types and can be edited by the officials
 
-### 2)TWEETS
-
-Tweets are like micro blogs and we have the functionality to create, delete and fetch our tweets and the tweets of the people whom we follow.
-
-#### 1. Create a new Tweet 
+#### 1. Create a new Disability Type 
 
 - POST
-- End point - API_ROOT/api/v1/tweets/create 
+- End point - API_ROOT/api/v1/disability/create 
 - Authorization Required - Yes
 - Form body
-  - content - String (less than 140 chars)
+  - disability_name - String
+  - disability_code - String
 
 - Returns the following upon success
 
 ```
 {
     "data": {
-        "tweet": {
-            "content": "Feeling a little sick !",
-            "user": {
-                "_id": "61dc26d6843e7ea2438aa267",
-                "email": "smdyarkhan00000@gmail.com",
-                "user_name": "sameer",
-                "name_": "sameer"
-            },
-            "_id": "61dc5265cedf8581b0f78115",
-            "createdAt": "2022-01-10T15:36:05.373Z",
-            "updatedAt": "2022-01-10T15:36:05.373Z",
+        "benefit": {
+            "disability_name": "Ruptured Spine",
+            "benefit_code": "RSP1CX",
+            "details": "",
+            "_id": "624355b19a9ea4fb5beea746",
+            "createdAt": "2022-03-29T18:53:37.237Z",
+            "updatedAt": "2022-03-29T18:53:37.237Z",
             "__v": 0
         }
     },
-    "message": "Tweets created!",
-    "success": true
-}
-```
-#### 2. Delete Your Tweet 
-
-- DELETE
-- End point - API_ROOT/api/v1/tweets/delete/:id
-- Authorization Required - Yes
-
-```
-{
-    "message": "Tweet deleted successfully",
+    "message": "disability created!",
     "success": true
 }
 ```
 
-#### 3.  Get your own tweets (sorted by latest)
+#### 2. Delete Disability (sorted by latest)
 
 - GET
-- End point - API_ROOT/api/v1/tweets/self
+- End point - API_ROOT/api/v1/disability/delete/:id
 - Authorization Required - Yes
 - JSON Response
 
 ```
 {
-    "message": "Tweet fetched successfully",
+    "message": "Diability Type Delted successfully",
     "success": true,
-    "myTweets": [
-        {
-            "_id": "61dc5265cedf8581b0f78115",
-            "content": "Feeling a little sick !",
-            "user": "61dc26d6843e7ea2438aa267",
-            "createdAt": "2022-01-10T15:36:05.373Z",
-            "updatedAt": "2022-01-10T15:36:05.373Z",
-            "__v": 0
-        },
-        {
-            "_id": "61dc272b843e7ea2438aa26b",
-            "content": "Hi I am sameer !",
-            "user": "61dc26d6843e7ea2438aa267",
-            "createdAt": "2022-01-10T12:31:39.302Z",
-            "updatedAt": "2022-01-10T12:31:39.302Z",
-            "__v": 0
-        }
-    ]
 }
 ```
 
-#### 4.  Get tweets by the people you follow (sorted by latest)
+#### 3.  Get All types of disabilities
 
 - GET
-- End point - API_ROOT/api/v1/tweets/timeline
+- End point - API_ROOT/api/v1/disability/all
 - Authorization Required - Yes
 
 - JSON Reponse 
@@ -341,31 +357,31 @@ Tweets are like micro blogs and we have the functionality to create, delete and 
 
 ```
 {
-    "message": "Tweet fetched successfully",
+    "message": "Disabilities fetched successfully",
     "success": true,
-    "tweets": [
+    "disabilities": [
         {
-            "_id": "61dc5265cedf8581b0f78115",
-            "content": "Feeling a little sick !",
-            "user": {
-                "_id": "61dc26d6843e7ea2438aa267",
-                "user_name": "sameer",
-                "name_": "sameer"
-            },
-            "createdAt": "2022-01-10T15:36:05.373Z",
-            "updatedAt": "2022-01-10T15:36:05.373Z",
+            "_id": "62422149682094344953f720",
+            "disability_name": "Hearing Impairment",
+            "disability_code": "HEA123",
+            "createdAt": "2022-03-28T20:57:45.812Z",
+            "updatedAt": "2022-03-28T20:57:45.812Z",
             "__v": 0
         },
         {
-            "_id": "61dc2777843e7ea2438aa274",
-            "content": "Too cloud  today !",
-            "user": {
-                "_id": "61dabcff577930f23b4c7292",
-                "user_name": "sam",
-                "name_": "samad"
-            },
-            "createdAt": "2022-01-10T12:32:55.210Z",
-            "updatedAt": "2022-01-10T12:32:55.210Z",
+            "_id": "62422172507a3f0f54402460",
+            "disability_name": "Speach Issues Level 1",
+            "disability_code": "SPIS1",
+            "createdAt": "2022-03-28T20:58:26.859Z",
+            "updatedAt": "2022-03-28T20:58:26.859Z",
+            "__v": 0
+        },
+        {
+            "_id": "6242217b507a3f0f54402465",
+            "disability_name": "Speach Issues Level 4",
+            "disability_code": "SPIS4",
+            "createdAt": "2022-03-28T20:58:35.552Z",
+            "updatedAt": "2022-03-28T20:58:35.552Z",
             "__v": 0
         }
     ]
@@ -373,12 +389,264 @@ Tweets are like micro blogs and we have the functionality to create, delete and 
 
 ```
 
+## 3) Disabeled
+    
+The `Disabeled` object will contain a user and a disability. This will map a user with on dissability. If a user has multiple disabilited he/she will have to create multiple disabeled objects, or show multiple ways in which they are `Disabeled` by creating multiples 'Disabeled' objects which will have to be approved by admin
+    
+#### 1)User adding a disability using disability._id to their profile / Add Disabeled
+    
+- POST
+- End point - API_ROOT/api/v1/disabeled/create/?id=disability_id
+- Authorization Required - Yes
+- User - benificiary
+
+- JSON Reponse 
+ 
+ ```
+ {
+    "message": "Disabile Person Added",
+    "success": true,
+    "newDisabeled": {
+        "user": "6241f8f69e569b7b03551916",
+        "disability": "6242217b507a3f0f54402465",
+        "pending": true,
+        "approved": false,
+        "_id": "62434a849a9ea4fb5beea721",
+        "createdAt": "2022-03-29T18:05:56.102Z",
+        "updatedAt": "2022-03-29T18:05:56.102Z",
+        "__v": 0
+    }
+}
+```
+    
+#### 2)Getting All Disabeled People ( NOTE : if a user has multiple disabilities we get multiples disabeled objects for the user )
+    
+- GET
+- End point - API_ROOT/api/v1/disabeled/create/
+- Authorization Required - Yes
+- User - official
+
+- JSON Reponse 
+ 
+ ```
+ {
+    "success": true,
+    "disableData": [
+        {
+            "_id": "62423139263c994728899a9b",
+            "user": "6241f8f69e569b7b03551916",
+            "disability": {
+                "_id": "62422149682094344953f720",
+                "disability_name": "Hearing Impairment",
+                "disability_code": "HEA123",
+                "createdAt": "2022-03-28T20:57:45.812Z",
+                "updatedAt": "2022-03-28T20:57:45.812Z",
+                "__v": 0
+            },
+            "pending": true,
+            "approved": false,
+            "createdAt": "2022-03-28T22:05:45.636Z",
+            "updatedAt": "2022-03-28T22:05:45.636Z",
+            "__v": 0
+        },
+        {
+            "_id": "62434a849a9ea4fb5beea721",
+            "user": "6241f8f69e569b7b03551916",
+            "disability": {
+                "_id": "6242217b507a3f0f54402465",
+                "disability_name": "Speach Issues Level 4",
+                "disability_code": "SPIS4",
+                "createdAt": "2022-03-28T20:58:35.552Z",
+                "updatedAt": "2022-03-28T20:58:35.552Z",
+                "__v": 0
+            },
+            "pending": true,
+            "approved": false,
+            "createdAt": "2022-03-29T18:05:56.102Z",
+            "updatedAt": "2022-03-29T18:05:56.102Z",
+            "__v": 0
+        }
+    ]
+
+```
+    
+#### 3)Approving Diability of a benficiary
+    
+- GET
+- End point - API_ROOT/api/v1/disabeled/approve?id='disabeled_id'
+- Authorization Required - Yes
+- User - official
+
+- JSON Reponse 
+ 
+ ```
+ {
+    "success": true,
+    "message": "Approved Diability",
+    "updatedDisabled": {
+        "acknowledged": true,
+        "modifiedCount": 1,
+        "upsertedId": null,
+        "upsertedCount": 0,
+        "matchedCount": 1
+    }
+}
+```
+    
+ #### 4)Disapproving Diability of a benficiary
+    
+- GET
+- End point - API_ROOT/api/v1/disabeled/disapprove?id='disabeled_id'
+- Authorization Required - Yes
+- User - official
+
+- JSON Reponse 
+ 
+ ```
+ {
+    "success": true,
+    "message": "Disapproved Diability",
+    "updatedDisabled": {
+        "acknowledged": true,
+        "modifiedCount": 1,
+        "upsertedId": null,
+        "upsertedCount": 0,
+        "matchedCount": 1
+    }
+}
+```
+  
+ ### 3)Benefits
+
+Benefits can be of numerous types and can be edited by the officials
+
+#### 1. Create a new Benefit Type 
+
+- POST
+- End point - API_ROOT/api/v1/benefit/create 
+- Authorization Required - Yes
+- Form body
+  - benefit_name - String
+  - benefit_code - String
+
+- Returns the following upon success
+
+```
+{
+    "data": {
+        "benefit": {
+            "benefit_name": "Free Implants",
+            "benefit_code": "FI1A",
+            "details": "",
+            "_id": "624355b19a9ea4fb5beea746",
+            "createdAt": "2022-03-29T18:53:37.237Z",
+            "updatedAt": "2022-03-29T18:53:37.237Z",
+            "__v": 0
+        }
+    },
+    "message": "benefit created!",
+    "success": true
+}
+```
+
+#### 2. Delete Benefit (sorted by latest)
+
+- GET
+- End point - API_ROOT/api/v1/benfit/delete/:id
+- Authorization Required - Yes
+- JSON Response
+
+```
+{
+    "message": "Benefit Type Delted successfully",
+    "success": true,
+}
+```
+
+#### 3.  Get All types of benfits
+
+- GET
+- End point - API_ROOT/api/v1/benfit/all
+- Authorization Required - Yes
+
+- JSON Reponse 
 
 
+```
+{
+    "message": "Benefits fetched successfully",
+    "success": true,
+    "benefits": [
+        {
+            "_id": "624234d436c00659a3fc7992",
+            "benefit_name": "Free Wheat",
+            "benefit_code": "WH1",
+            "details": "Wheat for everyone",
+            "createdAt": "2022-03-28T22:21:08.264Z",
+            "updatedAt": "2022-03-28T22:21:08.264Z",
+            "__v": 0
+        },
+        {
+            "_id": "6242350a36c00659a3fc7997",
+            "benefit_name": "Free Rice",
+            "benefit_code": "RC1",
+            "details": "Rice for everyone",
+            "createdAt": "2022-03-28T22:22:02.389Z",
+            "updatedAt": "2022-03-28T22:22:02.389Z",
+            "__v": 0
+        },
+        {
+            "_id": "624355b19a9ea4fb5beea746",
+            "benefit_name": "Free Implants",
+            "benefit_code": "FI1A",
+            "details": "",
+            "createdAt": "2022-03-29T18:53:37.237Z",
+            "updatedAt": "2022-03-29T18:53:37.237Z",
+            "__v": 0
+        }
+    ]
+}
+
+```
+
+## 4) ProcessedBenefits
+    
+Processed Benefits are benefits which are demanded by a user and maps a user to a benfit. The benefit must be approved by official.
+    
+#### 1)User Demanding Benefit
+    
+- POST
+- End point - API_ROOT/api/v1/disabeled/processedbenefit/?id=benfit_id
+- Authorization Required - Yes
+- User - benificiary
+
+    
+#### 2)Getting All Benfits Reqeusted  (Proccessed Benefits)
+    
+- GET
+- End point - API_ROOT/api/v1/processedbenefit/create/
+- Authorization Required - Yes
+- User - official
 
 
+    
+#### 3)Approving Benefit Request of a benficiary
+    
+- GET
+- End point - API_ROOT/api/v1/processedbenefit/approve?id='processedbenefit_id'
+- Authorization Required - Yes
+- User - official
+
+    
+ #### 4)Disapproving Benefits reqeuested a benficiary
+    
+- GET
+- End point - API_ROOT/api/v1/processedbenefit/disapprove?id='processedbenefit_id'
+- Authorization Required - Yes
+- User - official
 
 
+  
 
   
 
@@ -406,3 +674,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 5. Express.js
 
 ## Feel free to test the project and don't forget to star the repo if it proves helpful !
+

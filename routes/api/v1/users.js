@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const passport = require("passport");
 
 router.get('/all' ,passport.authenticate("jwt", { session: false }), usersApi.allUsers );
-router.post('/find',passport.authenticate("jwt", { session: false }), usersApi.findUsers );
+router.get('/find',passport.authenticate("jwt", { session: false }), usersApi.findUsers );
 router.post('/signup',usersApi.create);
 router.post("/login", usersApi.createSession);
 router.get("/profile", passport.authenticate("jwt", { session: false }), usersApi.profile);
