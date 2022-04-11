@@ -302,3 +302,31 @@ module.exports.profile = async function (req, res) {
 		});
 	}
 };
+
+
+module.exports.heatmapData = async function (req, res) {
+  //fetch users grouped by state
+  try {
+    let users = await User.aggregate([
+      {
+        $group: {
+          _id: "$state",
+          value: { $sum: 1 },
+        },
+      },
+    ]);
+    return res.status(200).json({
+      message: "Users heatmap data fetched successfully!",
+      data: {
+        users: users,
+      },
+      success: true,
+    });
+  } catch (err) {
+    console.log("Error in fetching users heatmap data******", err);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
