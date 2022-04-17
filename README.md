@@ -647,8 +647,12 @@ Processed Benefits are benefits which are demanded by a user and maps a user to 
 
 
   
+ #### 5) Generate Dummy Data (100k entries by default)
+    
+- Navigate to root directory and run `npm run data-seed`
 
-  
+
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.Please make sure to update tests as appropriate.
